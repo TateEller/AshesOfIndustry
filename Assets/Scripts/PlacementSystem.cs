@@ -143,13 +143,17 @@ public class PlacementSystem : MonoBehaviour
         Vector3Int gridPosition = grid.WorldToCell(worldPos);
         if (!CheckPlacementValidity(gridPosition, selectedObjectIndex)) return;
 
-        GameObject newObject = Instantiate(database.objectsData[selectedObjectIndex].Prefab);
+        ObjectData objData = database.objectsData[selectedObjectIndex];
+
+        GameObject newObject = Instantiate(objData.Prefab);
         newObject.transform.position = grid.CellToWorld(gridPosition);
         placedGameObjects.Add(newObject);
 
-        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
-        selectedData.AddObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size, database.objectsData[selectedObjectIndex].ID, placedGameObjects.Count - 1);
+        GridData selectedData = objData.ID == 0 ? floorData : furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
+        selectedData.AddObjectAt(gridPosition, objData.Size, objData.ID, placedGameObjects.Count - 1);
 
         preview.UpdatePosition(grid.CellToWorld(gridPosition), false);
+
+        SaveSystem.Instance.SaveSingleBuilding(objData.ID, newObject.transform.position);
     }
 }
