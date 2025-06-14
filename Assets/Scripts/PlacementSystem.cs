@@ -8,13 +8,14 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private GameObject mouseIndicator;
     [SerializeField] private InputManager inputManager;
     [SerializeField] private Grid grid;
+    [SerializeField] private Transform raftParent;
 
     [SerializeField] private ObjectsDatabaseSO database;
     private int selectedObjectIndex = -1;
 
     [SerializeField] private GameObject gridVisualization;
 
-    private GridData floorData, furnitureData;
+    internal GridData floorData, furnitureData;
 
     private List<GameObject> placedGameObjects = new();
 
@@ -64,6 +65,8 @@ public class PlacementSystem : MonoBehaviour
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
         GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
+
+        //only allow rafts to be placed next to other rafts
 
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
     }
@@ -147,6 +150,7 @@ public class PlacementSystem : MonoBehaviour
 
         GameObject newObject = Instantiate(objData.Prefab);
         newObject.transform.position = grid.CellToWorld(gridPosition);
+        newObject.transform.SetParent(raftParent);
         placedGameObjects.Add(newObject);
 
         GridData selectedData = objData.ID == 0 ? floorData : furnitureData;  //works for tutorial. ID zero will be abke to be placed on others

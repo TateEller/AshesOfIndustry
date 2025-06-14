@@ -24,6 +24,12 @@ public class SaveSystem : MonoBehaviour
 
     public List<GameObject> placedBuildings = new();
 
+    [SerializeField] private Grid grid;
+    [SerializeField] private PlacementSystem placementSystem;
+    [SerializeField] private Transform raftParent;
+
+    private GridData raftTileData = new();
+
     private void Awake()
     {
         if(Instance == null)
@@ -71,16 +77,31 @@ public class SaveSystem : MonoBehaviour
             return;
         }
 
+        //clear old tiles off
+        foreach(var obj in placedBuildings)
+        {
+            Destroy(obj);
+        }
+        placedBuildings.Clear();
+        raftTileData = new GridData();
+
         string json = PlayerPrefs.GetString("SaveData");
         SaveData data = JsonUtility.FromJson<SaveData>(json);
 
         foreach (BuildingData building in data.buildings)
         {
             GameObject prefab = buildingDatabase.objectsData[building.id - 1].Prefab;
-            if(prefab != null)
+            ObjectData objectData = buildingDatabase.objectsData[building.id - 1];
+
+            if (prefab != null)
             {
-                GameObject obj = Instantiate(prefab, building.position, default);
+                GameObject obj = Instantiate(prefab, building.position, Quaternion.identity, raftParent);
                 placedBuildings.Add(obj);
+
+                Vector3Int gridPosition = grid.WorldToCell(building.position);
+
+                raftTileData.AddObjectAt(gridPosition, objectData.Size, objectData.ID, placedBuildings.Count - 1);
+
             }
             else { Debug.LogWarning($"No prefab found with ID {building.id}"); }
         }
@@ -88,8 +109,26 @@ public class SaveSystem : MonoBehaviour
         Debug.Log($"Loaded {data.buildings.Count} buildings");
     }
 
+    public SaveData GetSaveData()
+    {
+        string json = PlayerPrefs.GetString("SaveData", string.Empty);
+        if (string.IsNullOrEmpty(json))
+        {
+            return new SaveData();
+        }
+
+        return JsonUtility.FromJson<SaveData>(json);
+    }
+
     public void ClearSaveData()
     {
+        foreach(GameObject obj in placedBuildings)
+        {
+            if (obj != null) Destroy(obj);
+        }
+
+        placedBuildings.Clear();
+
         PlayerPrefs.DeleteKey("SaveData");
         PlayerPrefs.Save();
         Debug.Log("Save data cleared");
