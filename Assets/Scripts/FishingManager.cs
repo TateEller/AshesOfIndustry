@@ -6,6 +6,8 @@ using TMPro;
 
 public class FishingManager : MonoBehaviour
 {
+    [SerializeField] private ResourcesSO resources;
+
     [SerializeField] private TextMeshProUGUI timerText;
     [SerializeField] private GameObject[] spawnOptions;
 
@@ -68,6 +70,7 @@ public class FishingManager : MonoBehaviour
                     btn.onClick.AddListener(() =>
                     {
                         Debug.Log("Collect Fish");
+                        resources.fish++;
                         Destroy(spawn);
                     });
                     break;
@@ -75,6 +78,7 @@ public class FishingManager : MonoBehaviour
                     btn.onClick.AddListener(() =>
                     {
                         Debug.Log("Collect Wood");
+                        resources.wood++;
                         Destroy(spawn);
                     });
                     break;
@@ -82,6 +86,7 @@ public class FishingManager : MonoBehaviour
                     btn.onClick.AddListener(() =>
                     {
                         Debug.Log("Collect Trash");
+                        resources.junk++;
                         Destroy(spawn);
                     });
                     break;

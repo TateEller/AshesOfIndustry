@@ -13,6 +13,8 @@ public class PlacementSystem : MonoBehaviour
     [SerializeField] private ObjectsDatabaseSO database;
     private int selectedObjectIndex = -1;
 
+    [SerializeField] private ResourcesSO resources;
+
     [SerializeField] private GameObject gridVisualization;
 
     internal GridData floorData, furnitureData;
@@ -38,6 +40,8 @@ public class PlacementSystem : MonoBehaviour
     {
         StopPlacement();
 
+        if (!CanAffordBuild(ID)) return;
+
         selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID);
         if (selectedObjectIndex < 0)
         {
@@ -54,6 +58,47 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnEndPlacement += HandleEndPlacement;
 
         StartCoroutine(EnablePlacementNextFrame());
+    }
+
+    private bool CanAffordBuild(int ID)
+    {
+        //check item cost
+        switch (ID)
+        {
+            case (1):   //basic - 2 wood
+                if (resources.wood >= 2)
+                {
+                    resources.wood -= 2;
+                    return true;
+                }
+                break;
+            case (2):   //fishing - 2 wood, 1 fish
+                if(resources.wood >= 2 && resources.fish >= 1)
+                {
+                    resources.wood -= 2;
+                    resources.fish -= 1;
+                    return true;
+                }
+                break;
+            case (3):   //storage - 3 wood, 1 metal
+                if (resources.wood >= 3 && resources.metal >= 1)
+                {
+                    resources.wood -= 3;
+                    resources.metal -= 1;
+                    return true;
+                }
+                break;
+            case (4):   //water - 2 wood, 2 metal
+                if (resources.wood >= 2 && resources.metal >= 2)
+                {
+                    resources.wood -= 2;
+                    resources.metal -= 2;
+                    return true;
+                }
+                break;
+        }
+        Debug.Log("Cant afford build");
+        return false;
     }
 
     private IEnumerator EnablePlacementNextFrame()

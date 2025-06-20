@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4779938978246772332}
+  - component: {fileID: 8004184092708932187}
   m_Layer: 0
   m_Name: FishingTile
   m_TagString: Untagged
@@ -32,6 +33,22 @@ Transform:
   - {fileID: 5335864119955544728}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8004184092708932187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6550988950805418169}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a3b46593947539443bc6b767c67701a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  resources: {fileID: 11400000, guid: 79909c96a056aa040a4ed56481e6d257, type: 2}
+  doesGenerate: 1
+  generateType: 2
+  cooldown: 30
 --- !u!1001 &5586281408634994035
 PrefabInstance:
   m_ObjectHideFlags: 0
