@@ -46,6 +46,15 @@ public class GridData
         }
         return true;
     }
+
+    public bool isObjectAt(Vector3Int gridPosition)
+    {
+        return placedObjects.ContainsKey(gridPosition);
+    }
+    public void Clear()
+    {
+        placedObjects.Clear();
+    }
 }
 
 public class PlacementData

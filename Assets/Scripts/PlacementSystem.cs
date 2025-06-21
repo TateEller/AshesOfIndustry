@@ -17,9 +17,9 @@ public class PlacementSystem : MonoBehaviour
 
     [SerializeField] private GameObject gridVisualization;
 
-    internal GridData floorData, furnitureData;
+    internal GridData furnitureData;
 
-    private List<GameObject> placedGameObjects = new();
+    internal List<GameObject> placedGameObjects = new();
 
     [SerializeField] private PreviewSystem preview;
 
@@ -29,16 +29,20 @@ public class PlacementSystem : MonoBehaviour
     private bool isDragging = false;
     private Vector3 startTouchPosition;
 
+    private void Awake()
+    {
+        if (furnitureData == null)
+            furnitureData = new();
+    }
     private void Start()
     {
         StopPlacement();
-        floorData = new();
-        furnitureData = new();
     }
 
     public void StartPlacement(int ID)
     {
         StopPlacement();
+        Camera.main.GetComponent<MobileCameraControls>().canPan = false;
 
         if (!CanAffordBuild(ID)) return;
 
@@ -67,13 +71,38 @@ public class PlacementSystem : MonoBehaviour
         {
             case (1):   //basic - 2 wood
                 if (resources.wood >= 2)
+                    return true;
+                break;
+            case (2):   //fishing - 2 wood, 1 fish
+                if(resources.wood >= 2 && resources.fish >= 1)
+                    return true;
+                break;
+            case (3):   //storage - 3 wood, 1 metal
+                if (resources.wood >= 3 && resources.metal >= 1)
+                    return true;
+                break;
+            case (4):   //water - 2 wood, 2 metal
+                if (resources.wood >= 2 && resources.metal >= 2)
+                    return true;
+                break;
+        }
+        Debug.Log("Cant afford build");
+        return false;
+    }
+    private bool BuyBuild(int ID)
+    {
+        //check item cost
+        switch (ID)
+        {
+            case (1):   //basic - 2 wood
+                if (resources.wood >= 2)
                 {
                     resources.wood -= 2;
                     return true;
                 }
                 break;
             case (2):   //fishing - 2 wood, 1 fish
-                if(resources.wood >= 2 && resources.fish >= 1)
+                if (resources.wood >= 2 && resources.fish >= 1)
                 {
                     resources.wood -= 2;
                     resources.fish -= 1;
@@ -109,10 +138,30 @@ public class PlacementSystem : MonoBehaviour
 
     private bool CheckPlacementValidity(Vector3Int gridPosition, int selectedObjectIndex)
     {
-        GridData selectedData = database.objectsData[selectedObjectIndex].ID == 0 ? floorData : furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
+        GridData selectedData = furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
 
         //only allow rafts to be placed next to other rafts
+        Vector3Int[] directions = new Vector3Int[]
+        {
+            new Vector3Int (1,0,0),
+            new Vector3Int (-1,0,0),
+            new Vector3Int (0,0,1),
+            new Vector3Int (0,0,-1),
+        };
 
+        bool adjacentRaft = false;
+        foreach(Vector3Int dir in directions)
+        {
+            if (!furnitureData.CanPlaceObjectAt(gridPosition + dir, database.objectsData[selectedObjectIndex].Size))
+            {
+                adjacentRaft = true;
+                break;
+            }
+        }
+        if (!adjacentRaft) 
+            return false;   
+
+        //check actual placement spot
         return selectedData.CanPlaceObjectAt(gridPosition, database.objectsData[selectedObjectIndex].Size);
     }
     private void StopPlacement()
@@ -127,6 +176,7 @@ public class PlacementSystem : MonoBehaviour
         inputManager.OnEndPlacement -= HandleEndPlacement;
 
         lastDetectedPosition = Vector3Int.zero;
+        Camera.main.GetComponent<MobileCameraControls>().canPan = true;
     }
 
     private void HandleStartPlacement(Vector3 worldPos)
@@ -190,6 +240,11 @@ public class PlacementSystem : MonoBehaviour
     {
         Vector3Int gridPosition = grid.WorldToCell(worldPos);
         if (!CheckPlacementValidity(gridPosition, selectedObjectIndex)) return;
+        if (!BuyBuild(database.objectsData[selectedObjectIndex].ID))
+        {
+            Debug.Log("Can't Buy Build");
+            return;
+        }
 
         ObjectData objData = database.objectsData[selectedObjectIndex];
 
@@ -198,11 +253,46 @@ public class PlacementSystem : MonoBehaviour
         newObject.transform.SetParent(raftParent);
         placedGameObjects.Add(newObject);
 
-        GridData selectedData = objData.ID == 0 ? floorData : furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
+        GridData selectedData = furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
         selectedData.AddObjectAt(gridPosition, objData.Size, objData.ID, placedGameObjects.Count - 1);
 
         preview.UpdatePosition(grid.CellToWorld(gridPosition), false);
 
         SaveSystem.Instance.SaveSingleBuilding(objData.ID, newObject.transform.position);
+    }
+
+    public void CreateStarterRaft()
+    {
+        //Start placement
+        int ID = 1; //basic tile ID
+        selectedObjectIndex = database.objectsData.FindIndex(data => data.ID == ID);
+        if (selectedObjectIndex < 0)
+        {
+            Debug.LogError($"No ID found {ID}");
+            return;
+        }
+
+        //place at
+        Vector3 raftOrigin = new Vector3(0, 0, 0);
+        Vector3Int gridPosition = grid.WorldToCell(raftOrigin);
+
+        ObjectData objData = database.objectsData[selectedObjectIndex];
+
+        GameObject newObject = Instantiate(objData.Prefab);
+        newObject.transform.position = grid.CellToWorld(gridPosition);
+        newObject.transform.SetParent(raftParent);
+        placedGameObjects.Add(newObject);
+
+        if (furnitureData == null)
+        {
+            furnitureData = new();
+        }
+        GridData selectedData = furnitureData;  //works for tutorial. ID zero will be abke to be placed on others
+        selectedData.AddObjectAt(gridPosition, objData.Size, objData.ID, placedGameObjects.Count - 1);
+
+        SaveSystem.Instance.SaveSingleBuilding(objData.ID, newObject.transform.position);
+
+        //stop
+        StopPlacement();
     }
 }

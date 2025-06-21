@@ -12,3 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77de3b9a9ead77f4d94b14077d47cdb5, type: 3}
   m_Name: Resources
   m_EditorClassIdentifier: 
+  wood: 0
+  fish: 0

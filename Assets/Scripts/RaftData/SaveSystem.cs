@@ -64,8 +64,6 @@ public class SaveSystem : MonoBehaviour
         string newJson = JsonUtility.ToJson(data);
         PlayerPrefs.SetString("SaveData", newJson);
         PlayerPrefs.Save();
-
-        //Debug.Log($"Saved building ID {id} at position {position}");
     }
 
     //Call once the at the start of the game
@@ -74,6 +72,8 @@ public class SaveSystem : MonoBehaviour
         if (!PlayerPrefs.HasKey("SaveData"))
         {
             Debug.Log("No saved data found");
+            //Add basic raft tile
+            placementSystem.CreateStarterRaft();
             return;
         }
 
@@ -85,6 +85,7 @@ public class SaveSystem : MonoBehaviour
         placedBuildings.Clear();
         raftTileData = new GridData();
 
+        //load data
         string json = PlayerPrefs.GetString("SaveData");
         SaveData data = JsonUtility.FromJson<SaveData>(json);
 
@@ -100,8 +101,8 @@ public class SaveSystem : MonoBehaviour
 
                 Vector3Int gridPosition = grid.WorldToCell(building.position);
 
-                raftTileData.AddObjectAt(gridPosition, objectData.Size, objectData.ID, placedBuildings.Count - 1);
-
+                //raftTileData.AddObjectAt(gridPosition, objectData.Size, objectData.ID, placedBuildings.Count - 1);
+                placementSystem.furnitureData.AddObjectAt(gridPosition, objectData.Size, objectData.ID, placedBuildings.Count - 1);
             }
             else { Debug.LogWarning($"No prefab found with ID {building.id}"); }
         }
@@ -126,12 +127,20 @@ public class SaveSystem : MonoBehaviour
         {
             if (obj != null) Destroy(obj);
         }
+        foreach(GameObject obj in placementSystem.placedGameObjects)
+        {
+            if (obj != null) Destroy(obj);
+        }
 
         placedBuildings.Clear();
+        placementSystem.furnitureData.Clear();
 
         PlayerPrefs.DeleteKey("SaveData");
         PlayerPrefs.Save();
         Debug.Log("Save data cleared");
+
+        //Add basic raft tile
+        placementSystem.CreateStarterRaft();
     }
 
     private void Update()
