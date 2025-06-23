@@ -70,7 +70,7 @@ public class FishingManager : MonoBehaviour
                     btn.onClick.AddListener(() =>
                     {
                         Debug.Log("Collect Fish");
-                        resources.fish++;
+                        resources.Fish++;
                         Destroy(spawn);
                     });
                     break;
@@ -78,7 +78,7 @@ public class FishingManager : MonoBehaviour
                     btn.onClick.AddListener(() =>
                     {
                         Debug.Log("Collect Wood");
-                        resources.wood++;
+                        resources.Wood++;
                         Destroy(spawn);
                     });
                     break;
@@ -86,7 +86,7 @@ public class FishingManager : MonoBehaviour
                     btn.onClick.AddListener(() =>
                     {
                         Debug.Log("Collect Trash");
-                        resources.junk++;
+                        resources.Junk++;
                         Destroy(spawn);
                     });
                     break;

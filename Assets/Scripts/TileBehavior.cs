@@ -7,9 +7,8 @@ public class TileBehavior : MonoBehaviour
     [SerializeField] private ResourcesSO resources;
 
     public bool doesGenerate = false;
-    
-    [Tooltip("0-Water\n1-Wood\n2-Fish\n3-Metal\n4-Junk")]
-    public int generateType = 0;
+    public bool randomGeneration = true;
+    public Resources setGeneration;
 
     public int cooldown = 60;
     private bool onCooldown = false;
@@ -22,25 +21,32 @@ public class TileBehavior : MonoBehaviour
 
             Debug.Log("Generate");
 
-            switch (generateType)
+            if (randomGeneration)
             {
-                case (0):
-                    resources.water++;
+                //randomize the resource
+                setGeneration = (Resources)Random.Range(0, System.Enum.GetValues(typeof(Resources)).Length);
+            }
+
+            switch (setGeneration)
+            {
+                case (Resources.water):
+                    resources.Water++;
                     break;
-                case (1):
-                    resources.wood++;
+                case (Resources.wood):
+                    resources.Wood++;
                     break;
-                case (2):
-                    resources.fish++;
+                case (Resources.fish):
+                    resources.Fish++;
                     break;
-                case (3):
-                    resources.metal++;
+                case (Resources.metal):
+                    resources.Metal++;
                     break;
-                case (4):
-                    resources.junk++;
+                case (Resources.junk):
+                    resources.Junk++;
                     break;
             }
 
+            Debug.Log($"Generate {setGeneration}");
             StartCoroutine(WaitTimer());
         }
     }

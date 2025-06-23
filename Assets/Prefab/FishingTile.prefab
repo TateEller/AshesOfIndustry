@@ -47,7 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   resources: {fileID: 11400000, guid: 79909c96a056aa040a4ed56481e6d257, type: 2}
   doesGenerate: 1
-  generateType: 2
+  randomGeneration: 1
+  setGeneration: 2
   cooldown: 30
 --- !u!1001 &5586281408634994035
 PrefabInstance:

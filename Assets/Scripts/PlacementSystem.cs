@@ -70,19 +70,19 @@ public class PlacementSystem : MonoBehaviour
         switch (ID)
         {
             case (1):   //basic - 2 wood
-                if (resources.wood >= 2)
+                if (resources.Water >= 2)
                     return true;
                 break;
             case (2):   //fishing - 2 wood, 1 fish
-                if(resources.wood >= 2 && resources.fish >= 1)
+                if(resources.Wood >= 2 && resources.Fish >= 1)
                     return true;
                 break;
             case (3):   //storage - 3 wood, 1 metal
-                if (resources.wood >= 3 && resources.metal >= 1)
+                if (resources.Wood >= 3 && resources.Metal >= 1)
                     return true;
                 break;
             case (4):   //water - 2 wood, 2 metal
-                if (resources.wood >= 2 && resources.metal >= 2)
+                if (resources.Wood >= 2 && resources.Metal >= 2)
                     return true;
                 break;
         }
@@ -95,33 +95,33 @@ public class PlacementSystem : MonoBehaviour
         switch (ID)
         {
             case (1):   //basic - 2 wood
-                if (resources.wood >= 2)
+                if (resources.Wood >= 2)
                 {
-                    resources.wood -= 2;
+                    resources.Wood -= 2;
                     return true;
                 }
                 break;
             case (2):   //fishing - 2 wood, 1 fish
-                if (resources.wood >= 2 && resources.fish >= 1)
+                if (resources.Wood >= 2 && resources.Fish >= 1)
                 {
-                    resources.wood -= 2;
-                    resources.fish -= 1;
+                    resources.Wood -= 2;
+                    resources.Fish -= 1;
                     return true;
                 }
                 break;
             case (3):   //storage - 3 wood, 1 metal
-                if (resources.wood >= 3 && resources.metal >= 1)
+                if (resources.Wood >= 3 && resources.Metal >= 1)
                 {
-                    resources.wood -= 3;
-                    resources.metal -= 1;
+                    resources.Wood -= 3;
+                    resources.Metal -= 1;
                     return true;
                 }
                 break;
             case (4):   //water - 2 wood, 2 metal
-                if (resources.wood >= 2 && resources.metal >= 2)
+                if (resources.Wood >= 2 && resources.Metal >= 2)
                 {
-                    resources.wood -= 2;
-                    resources.metal -= 2;
+                    resources.Wood -= 2;
+                    resources.Metal -= 2;
                     return true;
                 }
                 break;

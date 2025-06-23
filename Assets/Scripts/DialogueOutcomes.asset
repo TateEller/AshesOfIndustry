@@ -1,0 +1,46 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a22bf5009ee26bb4f97f47643f3395dd, type: 3}
+  m_Name: DialogueOutcomes
+  m_EditorClassIdentifier: 
+  oneOffLines:
+  - The seas were calm and the ocean open
+  - The stars shined brightly, guiding you safely
+  - Life on this raft can be lonely, luckily you have an imaginary friend
+  - Endless water, as far as the eye can see
+  - A gentle breeze blows, cooling you off from the heat
+  - The sun sets like fire on the water
+  - The waves carry out peacefully
+  - The sails are pointed east
+  - A couple of strange fish swim by
+  - The cities lie beneath, as if you were a bird flying high above
+  - Winds are steady today
+  - Another quiet stretch of ocean
+  - Nothing but water in all directions
+  - Currents are picking up
+  - It looks like a storm to the north
+  - The supplies seems to be secured
+  - Another day, another endless ocean
+  - Sometimes the ocean can really dance
+  - There are worse things than running out of supplies
+  - No sign of survivors
+  loreLines:
+  - The news always talked about what the increase in pollution could cause
+  - The skyscrapers are now failing to reach out of the water
+  - Powering the future with steam and steal. Now there is only water
+  - Who knew there was this much water frozen in the artic
+  - The sky once blackened with soot now reflects on endless waters
+  - These mighty factories are now only enjoyed by the fish
+  - The inventions meant to propel us into the future now drown us all
+  - In the endless ocean, you're both a master and prisoner of the tide
+  - Echoes of whistles and factory bells drift faintly beneath the water
+  - These blueprints and rusted gears are now treasures

@@ -9,19 +9,19 @@ public class ResourceUIHandler : MonoBehaviour
 
     void Update()
     {
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ($"Water: {resource.water}");
-        transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ($"Wood: {resource.wood}");
-        transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ($"Fish: {resource.fish}");
-        transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = ($"Metal: {resource.metal}");
-        transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = ($"Junk: {resource.junk}");
+        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ($"Water: {resource.Water}");
+        transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ($"Wood: {resource.Wood}");
+        transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ($"Fish: {resource.Fish}");
+        transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = ($"Metal: {resource.Metal}");
+        transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = ($"Junk: {resource.Junk}");
     }
 
     public void ClearData()
     {
-        resource.water = 0;
-        resource.wood = 0;
-        resource.fish = 0;
-        resource.metal = 0;
-        resource.junk = 0;
+        resource.Water = 0;
+        resource.Wood = 0;
+        resource.Fish = 0;
+        resource.Metal = 0;
+        resource.Junk = 0;
     }
 }
