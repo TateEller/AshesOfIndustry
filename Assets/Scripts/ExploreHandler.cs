@@ -7,9 +7,11 @@ public class ExploreHandler : MonoBehaviour
 {
     [SerializeField] private MenuManager menuMan;
     [SerializeField] private GameObject mainUI;
+    [SerializeField] private GameObject battlePanel;
     [SerializeField] private ResourcesSO resources;
     [SerializeField] private DialogueSO dialogue;
     [SerializeField] private TextMeshProUGUI eventText;
+
 
     public void StartExploring()
     {
@@ -24,8 +26,7 @@ public class ExploreHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        /*
-        int encounter = Random.Range(0, 20);
+        int encounter = Random.Range(19, 20);
         if (encounter < 11)
         {
             ItemEncounter();
@@ -38,10 +39,11 @@ public class ExploreHandler : MonoBehaviour
         else if (encounter == 19 || encounter == 20)
         {
             //battle
-            eventText.text = ("Battle outcome");
-        }   */
+            menuMan.SlideOutMenu(this.gameObject);
+            menuMan.SlideInMenu(battlePanel);
+            battlePanel.GetComponent<BattleManager>().StartBattle();
+        }  
 
-        ItemEncounter();
 
         StartCoroutine(WaitForExit());
     }
@@ -91,5 +93,15 @@ public class ExploreHandler : MonoBehaviour
         menuMan.SlideOutMenu(this.gameObject);
         menuMan.SlideInMenu(mainUI);
         eventText.text = "...";
+    }
+
+    public void BattleOver(string results)
+    {
+        eventText.text = results;
+
+        menuMan.SlideOutMenu(battlePanel);
+        menuMan.SlideInMenu(this.gameObject);
+
+        StartCoroutine(WaitForExit());
     }
 }
