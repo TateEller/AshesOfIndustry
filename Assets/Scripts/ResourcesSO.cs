@@ -6,77 +6,86 @@ public enum Resources { water, wood, fish, metal, junk }
 [CreateAssetMenu]
 public class ResourcesSO : ScriptableObject
 {
-    public Dictionary<Resources, int> resourceData = new();
-
-    private int water = 0;
-    private int wood = 0;
-    private int fish = 0;
-    private int metal = 0;
-    private int junk = 0;  
+    //public Dictionary<Resources, int> resourceData = new();
 
     public int Water
     {
         get
         {
-            resourceData.TryGetValue(Resources.water, out water);
-            return water;
+            return PlayerPrefs.GetInt("Water");
         }
         set
         {
-            resourceData[Resources.water] = value;
-            if (resourceData[Resources.water] < 0) resourceData[Resources.water] = 0;
+            PlayerPrefs.SetInt("Water", value);
+
+            if (PlayerPrefs.GetInt("Water") < 0)
+                PlayerPrefs.SetInt("Water", 0);
+
+            PlayerPrefs.Save();
         }
     }
     public int Wood
     {
         get
         {
-            resourceData.TryGetValue(Resources.wood, out wood);
-            return wood;
+            return PlayerPrefs.GetInt("Wood");
         }
         set
         {
-            resourceData[Resources.wood] = value;
-            if (resourceData[Resources.wood] < 0) resourceData[Resources.wood] = 0;
+            PlayerPrefs.SetInt("Wood", value);
+
+            if (PlayerPrefs.GetInt("Wood") < 0)
+                PlayerPrefs.SetInt("Wood", 0);
+
+            PlayerPrefs.Save();
         }
     }
     public int Fish
     {
         get
         {
-            resourceData.TryGetValue(Resources.fish, out fish);
-            return fish;
+            return PlayerPrefs.GetInt("Fish");
         }
         set
         {
-            resourceData[Resources.fish] = value;
-            if (resourceData[Resources.fish] < 0) resourceData[Resources.fish] = 0;
+            PlayerPrefs.SetInt("Fish", value);
+
+            if (PlayerPrefs.GetInt("Fish") < 0)
+                PlayerPrefs.SetInt("Fish", 0);
+
+            PlayerPrefs.Save();
         }
     }
     public int Metal
     {
         get
         {
-            resourceData.TryGetValue(Resources.metal, out metal);
-            return metal;
+            return PlayerPrefs.GetInt("Metal");
         }
         set
         {
-            resourceData[Resources.metal] = value;
-            if (resourceData[Resources.metal] < 0) resourceData[Resources.metal] = 0;
+            PlayerPrefs.SetInt("Metal", value);
+
+            if (PlayerPrefs.GetInt("Metal") < 0)
+                PlayerPrefs.SetInt("Metal", 0);
+
+            PlayerPrefs.Save();
         }
     }
     public int Junk
     {
         get
         {
-            resourceData.TryGetValue(Resources.junk, out junk);
-            return junk;
+            return PlayerPrefs.GetInt("Junk");
         }
         set
         {
-            resourceData[Resources.junk] = value;
-            if (resourceData[Resources.junk] < 0) resourceData[Resources.junk] = 0;
+            PlayerPrefs.SetInt("Junk", value);
+
+            if (PlayerPrefs.GetInt("Junk") < 0)
+                PlayerPrefs.SetInt("Junk", 0);
+
+            PlayerPrefs.Save();
         }
     }
 }

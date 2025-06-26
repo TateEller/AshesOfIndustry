@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class MobileCameraControls : MonoBehaviour
 {
@@ -21,7 +22,25 @@ public class MobileCameraControls : MonoBehaviour
     private Vector3 camOffset = new Vector3(4, 5, -4);
     public bool canPan = true;
 
+    [SerializeField] private InputManager inputMan;
+    private void Awake()
+    {
+        if(inputMan == null)
+        {
+            inputMan = FindObjectOfType<InputManager>();
+        }
+    }
+
     private void Update()
+    {
+#if UNITY_IOS || UNITY_ANDROID
+        HandleTouchInput();
+#else
+        HandleMouseInput();
+#endif
+    }
+
+    private void HandleTouchInput()
     {
         if (Input.touchCount == 0)
         {
@@ -39,6 +58,8 @@ public class MobileCameraControls : MonoBehaviour
 
             if (touch.phase == TouchPhase.Began)
             {
+                if (EventSystem.current != null && inputMan.IsPointerOverUI()) return;
+
                 lastPanPosition = touch.position;
                 panFingerId = touch.fingerId;
                 isPanning = true;
@@ -73,6 +94,32 @@ public class MobileCameraControls : MonoBehaviour
                 //ZoomCamera(distanceDelta);
                 lastPinchDistance = currentDistance;
             }
+        }
+    }
+    private void HandleMouseInput()
+    {
+        if (!canPan) return;
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (EventSystem.current != null && inputMan.IsPointerOverUI()) return;
+
+            lastPanPosition = Input.mousePosition;
+            isPanning = true;
+        }
+        else if(Input.GetMouseButton(0) && isPanning)
+        {
+            PanCamera(Input.mousePosition);
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isPanning = false;
+        }
+
+        float scroll = Input.GetAxis("Mouse ScrollWheel");
+        if(Mathf.Abs(scroll) > 0.01f)
+        {
+            ZoomCamera(scroll * 10f);
         }
     }
 

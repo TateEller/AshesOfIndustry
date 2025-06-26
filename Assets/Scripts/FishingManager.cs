@@ -82,10 +82,19 @@ public class FishingManager : MonoBehaviour
                         Destroy(spawn);
                     });
                     break;
-                default:    //trash
+                case (2):   //metal
                     btn.onClick.AddListener(() =>
                     {
-                        Debug.Log("Collect Trash");
+                        Debug.Log("Collect Metal");
+                        resources.Metal++;
+                        Destroy(spawn);
+                    });
+                    break;
+                case (3):   //Junk
+                default:    
+                    btn.onClick.AddListener(() =>
+                    {
+                        Debug.Log("Collect Junk");
                         resources.Junk++;
                         Destroy(spawn);
                     });

@@ -6,14 +6,15 @@ using TMPro;
 public class ResourceUIHandler : MonoBehaviour
 {
     [SerializeField] private ResourcesSO resource;
+    [SerializeField] private TextMeshProUGUI[] resourceText = new TextMeshProUGUI[5];
 
     void Update()
     {
-        transform.GetChild(0).GetComponent<TextMeshProUGUI>().text = ($"Water: {resource.Water}");
-        transform.GetChild(1).GetComponent<TextMeshProUGUI>().text = ($"Wood: {resource.Wood}");
-        transform.GetChild(2).GetComponent<TextMeshProUGUI>().text = ($"Fish: {resource.Fish}");
-        transform.GetChild(3).GetComponent<TextMeshProUGUI>().text = ($"Metal: {resource.Metal}");
-        transform.GetChild(4).GetComponent<TextMeshProUGUI>().text = ($"Junk: {resource.Junk}");
+        resourceText[0].text = resource.Water.ToString();
+        resourceText[1].text = resource.Wood.ToString();
+        resourceText[2].text = resource.Fish.ToString();
+        resourceText[3].text = resource.Metal.ToString();
+        resourceText[4].text = resource.Junk.ToString();
     }
 
     public void ClearData()
