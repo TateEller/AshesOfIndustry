@@ -29,6 +29,8 @@ public class PlacementSystem : MonoBehaviour
     private bool isDragging = false;
     private Vector3 startTouchPosition;
 
+    [SerializeField] private BattleStatsSO pStats;
+
     private void Awake()
     {
         if (furnitureData == null)
@@ -85,6 +87,18 @@ public class PlacementSystem : MonoBehaviour
                 if (resources.Wood >= 2 && resources.Metal >= 2)
                     return true;
                 break;
+            case (5):   //mast - 5 wood
+                if (resources.Wood >= 5)
+                {
+                    return true;
+                }
+                break;
+            case (6):   //cannon - 1 wood, 3 metal
+                if (resources.Wood >= 1 && resources.Metal >= 3)
+                {
+                    return true;
+                }
+                break;
         }
         Debug.Log("Cant afford build");
         return false;
@@ -114,6 +128,9 @@ public class PlacementSystem : MonoBehaviour
                 {
                     resources.Wood -= 3;
                     resources.Metal -= 1;
+                    //increase fishing time
+                    FindObjectOfType<Canvas>().GetComponentInChildren<FishingManager>(true).timer++;
+
                     return true;
                 }
                 break;
@@ -122,6 +139,27 @@ public class PlacementSystem : MonoBehaviour
                 {
                     resources.Wood -= 2;
                     resources.Metal -= 2;
+                    return true;
+                }
+                break;
+            case (5):   //mast - 5 wood
+                if (resources.Wood >= 5)
+                {
+                    resources.Wood -= 5;
+                    //increase attack speed
+                    pStats.AttackSpeed++;
+
+                    return true;
+                }
+                break;
+            case (6):   //cannon - 1 wood, 3 metal
+                if (resources.Wood >= 1 && resources.Metal >= 3)
+                {
+                    resources.Wood -= 1;
+                    resources.Metal -= 3;
+                    //increase damage
+                    pStats.Damage++;
+
                     return true;
                 }
                 break;

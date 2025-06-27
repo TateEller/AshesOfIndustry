@@ -12,7 +12,6 @@ public class FishingManager : MonoBehaviour
     [SerializeField] private GameObject[] spawnOptions;
 
     public float timer = 5f;
-    public int fishingHooks = 10;
 
     private bool gameRunning;
     public void StartFishingGame()
@@ -90,7 +89,15 @@ public class FishingManager : MonoBehaviour
                         Destroy(spawn);
                     });
                     break;
-                case (3):   //Junk
+                case (3):   //metal
+                    btn.onClick.AddListener(() =>
+                    {
+                        Debug.Log("Collect Water");
+                        resources.Water++;
+                        Destroy(spawn);
+                    });
+                    break;
+                case (4):   //Junk
                 default:    
                     btn.onClick.AddListener(() =>
                     {

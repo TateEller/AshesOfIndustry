@@ -15,6 +15,10 @@ public class ExploreHandler : MonoBehaviour
 
     public void StartExploring()
     {
+        //cost 1 water to explore
+        if (resources.Water <= 0) return;
+        else resources.Water--;
+
         menuMan.SlideOutMenu(mainUI);
         eventText.text = "...";
         menuMan.SlideInMenu(this.gameObject);
@@ -26,17 +30,17 @@ public class ExploreHandler : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
 
-        int encounter = Random.Range(19, 20);
-        if (encounter < 11)
+        int encounter = Random.Range(0, 20);
+        if (encounter <= 10)
         {
             ItemEncounter();
         }
-        else if (10 < encounter && encounter < 19)
+        else if (10 < encounter && encounter <= 16)
         {
             //dialouge, lore, no outcome
             eventText.text = (dialogue.GetRandomLine());
         }
-        else if (encounter == 19 || encounter == 20)
+        else if (16 < encounter && encounter <= 20)
         {
             //battle
             menuMan.SlideOutMenu(this.gameObject);
