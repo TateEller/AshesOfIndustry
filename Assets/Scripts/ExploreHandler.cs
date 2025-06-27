@@ -41,6 +41,8 @@ public class ExploreHandler : MonoBehaviour
             //battle
             menuMan.SlideOutMenu(this.gameObject);
             menuMan.SlideInMenu(battlePanel);
+            //yield return new WaitForSeconds(1);
+            Debug.Log("Battle");
             battlePanel.GetComponent<BattleManager>().StartBattle();
         }  
 

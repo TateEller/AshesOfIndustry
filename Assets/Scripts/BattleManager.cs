@@ -9,23 +9,32 @@ public class BattleManager : MonoBehaviour
     [SerializeField] private GameObject playerShip;
     private Slider pHealthBar;
 
+    [SerializeField] private Sprite[] enemyOptions;
     [SerializeField] private GameObject enemyShip;
     private Slider eHealthBar;
 
     private Dictionary<stats, float> enemyStats = new();
 
-    private int battlesWon = 0;
+    public int battlesWon;
 
     [SerializeField] private ResourcesSO resources;
     [SerializeField] private ExploreHandler explorer;
+    [SerializeField] private GameObject explosion;
 
-    public void StartBattle()
+    private void Awake()
     {
+        playerShip = transform.GetChild(0).gameObject;
+        enemyShip = transform.GetChild(1).gameObject;
+
         pHealthBar = playerShip.GetComponentInChildren<Slider>();
         eHealthBar = enemyShip.GetComponentInChildren<Slider>();
-
+    }
+    public void StartBattle()
+    {
         pHealthBar.maxValue = pStats.Health;
         pHealthBar.value = pStats.Health;
+
+        battlesWon = PlayerPrefs.GetInt("BattlesWon", 0);
 
         GenerateRandomEnemy(battlesWon);
 
@@ -38,6 +47,7 @@ public class BattleManager : MonoBehaviour
     {
         float difficultyMod = 1 + (0.01f * diff);
 
+        //set random stats
         float health = Random.Range(10, 20);
         health *= difficultyMod;
         Mathf.RoundToInt(health);
@@ -53,14 +63,25 @@ public class BattleManager : MonoBehaviour
         speed *= difficultyMod;
         enemyStats[stats.AttackSpeed] = speed;
 
+        //update sprite
+        enemyShip.transform.GetChild(1).GetComponent<Image>().sprite = enemyOptions[Random.Range(0, enemyOptions.Length)];
 
         Debug.Log($"Enemy stats: H-{health}, D-{dmg}, AS-{speed}");
     }
+
+    //do attack animation
+    //deal dmg
+    //wait cooldown
+    //repeat
+
     private IEnumerator PlayerAttackLoop()
     {
         while(enemyStats[stats.Health] > 0 && pStats.Health > 0)
         {
             yield return new WaitForSeconds(pStats.AttackSpeed);
+            GameObject temp = Instantiate(explosion, enemyShip.transform);
+            Destroy(temp, 0.5f);
+
             enemyStats[stats.Health] -= pStats.Damage;
             eHealthBar.value = enemyStats[stats.Health];
             Debug.Log("Player attack");
@@ -74,6 +95,9 @@ public class BattleManager : MonoBehaviour
         while (enemyStats[stats.Health] > 0 && pStats.Health > 0)
         {
             yield return new WaitForSeconds(enemyStats[stats.AttackSpeed]);
+            GameObject temp = Instantiate(explosion, playerShip.transform);
+            Destroy(temp, 0.5f);
+
             pStats.Health -= enemyStats[stats.Damage];
             pHealthBar.value = pStats.Health;
             Debug.Log("Enemy attack");
@@ -90,6 +114,7 @@ public class BattleManager : MonoBehaviour
         if (playerWon)
         {
             battlesWon++;
+            PlayerPrefs.SetInt("BattlesWon", PlayerPrefs.GetInt("BattlesWon") + 1);
             LootManager(2, 6);
         }
         else

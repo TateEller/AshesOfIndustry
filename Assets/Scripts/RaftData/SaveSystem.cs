@@ -136,6 +136,7 @@ public class SaveSystem : MonoBehaviour
         placementSystem.furnitureData.Clear();
 
         PlayerPrefs.DeleteKey("SaveData");
+        PlayerPrefs.DeleteKey("BattlesWon");
         PlayerPrefs.Save();
         Debug.Log("Save data cleared");
 

@@ -7,7 +7,7 @@ public enum stats { Health, Damage, AttackSpeed }
 [CreateAssetMenu]
 public class BattleStatsSO : ScriptableObject
 {
-    public Dictionary<stats, float> playerStats = new();
+    internal Dictionary<stats, float> playerStats = new();
 
     private void OnEnable()
     {
