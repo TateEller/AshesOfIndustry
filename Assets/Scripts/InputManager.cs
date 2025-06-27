@@ -19,10 +19,11 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBGL
         if (Input.GetMouseButtonDown(0) && !IsPointerOverUI())
         {
             Vector3 pos = GetWorldPosition(Input.mousePosition);
+            Debug.Log("[InputManager] Mouse down at world pos " + pos);
             OnStartPlacement?.Invoke(pos);
             isDragging = true;
         }
@@ -71,8 +72,10 @@ public class InputManager : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 100, placementLayermask))
         {
+            Debug.Log("[InputManager] Raycast HIT " + hit.collider.name + " at " + hit.point);
             return hit.point;
         }
+        Debug.Log("[InputManger] Raycast MISSED");
         return lastPosition;
     }
 

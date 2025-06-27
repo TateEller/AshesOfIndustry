@@ -120,12 +120,12 @@ public class FishingManager : MonoBehaviour
             float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
             rect.rotation = Quaternion.Euler(0, 0, angle);
             
-            float swimSpeed = Random.Range(4f, 5f); //high number is moving slower
+            float swimSpeed = Random.Range(5f, 8f); //high number is moving slower
 
             //MOVE :)
             LeanTween.move(spawn, endPos, swimSpeed).setEase(LeanTweenType.linear).setOnComplete(() => Destroy(spawn));
             
-            yield return new WaitForSeconds(Random.Range(0.5f, 1.5f));
+            yield return new WaitForSeconds(Random.Range(0.5f, 1f));  //time between spawns
         }
     }
 
@@ -133,9 +133,9 @@ public class FishingManager : MonoBehaviour
     {
         Vector2 start, end;
 
-        RectTransform canvas = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
-        float width = canvas.rect.width;
-        float height = canvas.rect.height;
+        //RectTransform canvas = GetComponentInParent<Canvas>().GetComponent<RectTransform>();
+        float width = 1280f;
+        float height = 720;
 
         switch (Random.Range(0, 4)) //where it starts
         {

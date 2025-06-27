@@ -72,7 +72,7 @@ public class PlacementSystem : MonoBehaviour
         switch (ID)
         {
             case (1):   //basic - 2 wood
-                if (resources.Water >= 2)
+                if (resources.Wood >= 2)
                     return true;
                 break;
             case (2):   //fishing - 2 wood, 1 fish
@@ -221,6 +221,9 @@ public class PlacementSystem : MonoBehaviour
     {
         if (!canPlace) return;
 
+        Debug.Log("[PlacementSystem] Start Placement at: " + worldPos);
+
+
         isDragging = false;
         startTouchPosition = worldPos;
 
@@ -250,6 +253,8 @@ public class PlacementSystem : MonoBehaviour
     {
         if (!canPlace) return;
 
+        Debug.Log("[PlacementSystem] End Placement at: " + worldPos + ", isDragging: " + isDragging);
+
         if (!isDragging)
         {
             //tap to place (no dragging)
@@ -272,11 +277,23 @@ public class PlacementSystem : MonoBehaviour
             mouseIndicator.transform.position = worldPos;
             preview.UpdatePosition(grid.CellToWorld(gridPosition), placementValidity);
             lastDetectedPosition = gridPosition;
+
+            Debug.Log("[PlacementSystem] UpdatePreviewPosition to: " + worldPos);
+            Debug.Log("[PlacementSystem] Grid Pos: " + gridPosition);
+            Debug.Log("[PlacementSystem] Placement Valid: " + placementValidity);
+
         }
     }
     private void PlaceBuildingAt(Vector3 worldPos)
     {
         Vector3Int gridPosition = grid.WorldToCell(worldPos);
+
+        Debug.Log("[PlacementSystem] Placing building at: " + worldPos);
+        if (!CheckPlacementValidity(gridPosition, selectedObjectIndex))
+        {
+            Debug.LogWarning("[PlacementSystem] Invalid placement at: " + gridPosition);
+        }
+
         if (!CheckPlacementValidity(gridPosition, selectedObjectIndex)) return;
         if (!BuyBuild(database.objectsData[selectedObjectIndex].ID))
         {

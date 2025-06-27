@@ -21,32 +21,6 @@ public class TileBehavior : MonoBehaviour
 
             Debug.Log("Generate");
 
-            if (randomGeneration)
-            {
-                //randomize the resource
-                setGeneration = (Resources)Random.Range(0, System.Enum.GetValues(typeof(Resources)).Length);
-            }
-
-            switch (setGeneration)
-            {
-                case (Resources.water):
-                    resources.Water++;
-                    break;
-                case (Resources.wood):
-                    resources.Wood++;
-                    break;
-                case (Resources.fish):
-                    resources.Fish++;
-                    break;
-                case (Resources.metal):
-                    resources.Metal++;
-                    break;
-                case (Resources.junk):
-                    resources.Junk++;
-                    break;
-            }
-
-            Debug.Log($"Generate {setGeneration}");
             StartCoroutine(WaitTimer());
         }
     }
@@ -54,6 +28,34 @@ public class TileBehavior : MonoBehaviour
     private IEnumerator WaitTimer()
     {
         yield return new WaitForSeconds(cooldown);
+
+        if (randomGeneration)
+        {
+            //randomize the resource
+            setGeneration = (Resources)Random.Range(0, System.Enum.GetValues(typeof(Resources)).Length);
+        }
+
+        switch (setGeneration)
+        {
+            case (Resources.water):
+                resources.Water++;
+                break;
+            case (Resources.wood):
+                resources.Wood++;
+                break;
+            case (Resources.fish):
+                resources.Fish++;
+                break;
+            case (Resources.metal):
+                resources.Metal++;
+                break;
+            case (Resources.junk):
+                resources.Junk++;
+                break;
+        }
+
+        Debug.Log($"Generate {setGeneration}");
+
         onCooldown = false;
     }
 }
